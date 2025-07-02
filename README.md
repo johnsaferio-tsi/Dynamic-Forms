@@ -24,7 +24,7 @@ A modern, dynamic form builder built with Next.js and Mantine UI. This project a
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/your-username/dynamic-forms.git
+   git clone https://github.com/johnsaferio-tsi/Dynamic-Forms.git
    cd dynamic-forms
    ```
 
