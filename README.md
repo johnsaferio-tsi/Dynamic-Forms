@@ -1,40 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Dynamic Forms
+
+A modern, dynamic form builder built with Next.js and Mantine UI. This project allows users to generate customizable forms from JSON schemas, preview them live, and validate user input with ease.
+
+## Features
+
+- **Dynamic Form Generation**: Build forms on the fly from JSON definitions.
+- **Live JSON Editor**: Edit your form schema in real time and see instant updates.
+- **Rich Field Support**: Supports text, number, email, password, radio, checkbox, date, select, file, and textarea fields.
+- **Validation**: Built-in validation for required fields, min/max values, email format, and more.
+- **Responsive Design**: Fully responsive and mobile-friendly UI.
+- **Example Drawer**: Access ready-to-use JSON schema examples for quick form creation.
+- **Modern UI**: Powered by [Mantine](https://mantine.dev/) for beautiful, accessible components.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- [Node.js](https://nodejs.org/) (v16 or higher recommended)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+
+### Installation
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/your-username/dynamic-forms.git
+   cd dynamic-forms
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. **Run the development server:**
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+4. **Open your browser:**
+
+   Visit [http://localhost:3000](http://localhost:3000) to see the app in action.
+
+## Usage
+
+- Use the JSON editor on the left (or top on mobile) to define your form schema.
+- Click **Generate Form** to render the form based on your JSON.
+- Use the **Example JSON** drawer to explore and copy sample schemas.
+- Fill out the form and see validation in real time.
+
+### Example JSON Schema
+
+```json
+{
+  "forms": [
+    {
+      "formName": "User Registration",
+      "fields": [
+        {
+          "type": "text",
+          "label": "Username",
+          "name": "username",
+          "required": true,
+          "minLength": 3,
+          "maxLength": 15
+        },
+        {
+          "type": "email",
+          "label": "Email",
+          "name": "email",
+          "required": true
+        },
+        {
+          "type": "password",
+          "label": "Password",
+          "name": "password",
+          "required": true,
+          "minLength": 6
+        }
+      ]
+    }
+  ]
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Structure
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+- `src/components/atoms/` — Reusable form field components (TextInput, NumberInput, etc.)
+- `src/components/modules/` — Higher-level modules (FormBuilder, ExampleDrawer, etc.)
+- `src/pages/` — Next.js pages
+- `src/utils/` — Utility functions and validation logic
+- `src/__tests__/` — Unit tests for components
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Testing
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+This project uses [Jest](https://jestjs.io/) and [React Testing Library](https://testing-library.com/) for unit tests.
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To run tests:
 
-## Learn More
+```bash
+npm test
+# or
+yarn test
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+**Made with ❤️ using Next.js and Mantine.**

@@ -1,0 +1,119 @@
+{
+  "forms": [
+    {
+      "formName": "User Registration",
+      "fields": [
+        {
+          "type": "text",
+          "label": "Username",
+          "name": "username",
+          "required": true,
+          "description": "Enter your username",
+          "placeholder": "Username",
+          "value": "",
+          "minLength": 3,
+          "maxLength": 15
+        },
+        {
+          "type": "password",
+          "label": "Password",
+          "name": "password",
+          "required": true,
+          "description": "Choose a strong password",
+          "placeholder": "Password",
+          "value": "",
+          "minLength": 6,
+          "maxLength": 20
+        },
+        {
+          "type": "email",
+          "label": "Email",
+          "name": "email",
+          "required": true,
+          "description": "Enter your email address",
+          "placeholder": "Email",
+          "value": ""
+        },
+        {
+          "type": "number",
+          "label": "Age",
+          "name": "age",
+          "required": true,
+          "description": "Enter your age",
+          "placeholder": "Age",
+          "value": "",
+          "min": 18,
+          "max": 99
+        },
+        {
+          "type": "radio",
+          "label": "Gender",
+          "name": "gender",
+          "required": true,
+          "description": "Select your gender",
+          "items": [
+            { "label": "Male", "value": "male" },
+            { "label": "Female", "value": "female" },
+            { "label": "Other", "value": "other" }
+          ],
+          "value": ""
+        },
+        {
+          "type": "checkbox",
+          "label": "Skills",
+          "name": "skills",
+          "required": true,
+          "description": "Select your skills",
+          "items": [
+            { "label": "JavaScript", "value": "js" },
+            { "label": "Python", "value": "py" },
+            { "label": "Java", "value": "java" }
+          ],
+          "value": []
+        },
+        {
+          "type": "date",
+          "label": "Date of Birth",
+          "name": "dob",
+          "required": true,
+          "description": "Pick your date of birth",
+          "placeholder": "DOB",
+          "value": ""
+        },
+        {
+          "type": "select",
+          "label": "Country",
+          "name": "country",
+          "required": true,
+          "description": "Select your country",
+          "placeholder": "Country",
+          "items": [
+            { "label": "USA", "value": "usa" },
+            { "label": "India", "value": "india" },
+            { "label": "Germany", "value": "germany" }
+          ],
+          "value": ""
+        },
+        {
+          "type": "file",
+          "label": "Profile Picture",
+          "name": "profilePic",
+          "required": false,
+          "description": "Upload your profile picture",
+          "placeholder": "Choose file",
+          "allowedExtensions": ["jpg", "png"],
+          "value": null
+        },
+        {
+          "type": "textarea",
+          "label": "Bio",
+          "name": "bio",
+          "required": false,
+          "description": "Tell us about yourself",
+          "placeholder": "Short bio...",
+          "value": ""
+        }
+      ]
+    }
+  ]
+}

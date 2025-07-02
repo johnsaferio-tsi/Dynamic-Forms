@@ -1,0 +1,90 @@
+{
+  "forms": [
+    {
+      "formName": "Contact Us",
+      "fields": [
+        {
+          "type": "text",
+          "label": "Full Name",
+          "name": "fullName",
+          "required": true,
+          "placeholder": "Your name",
+          "value": ""
+        },
+        {
+          "type": "email",
+          "label": "Email",
+          "name": "email",
+          "required": true,
+          "placeholder": "you@example.com",
+          "value": ""
+        },
+        {
+          "type": "textarea",
+          "label": "Message",
+          "name": "message",
+          "required": true,
+          "placeholder": "Type your message...",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "formName": "Newsletter Signup",
+      "fields": [
+        {
+          "type": "email",
+          "label": "Email",
+          "name": "newsletterEmail",
+          "required": true,
+          "placeholder": "you@example.com",
+          "value": ""
+        },
+        {
+          "type": "checkbox",
+          "label": "Topics",
+          "name": "topics",
+          "required": true,
+          "description": "Select topics of interest",
+          "items": [
+            { "label": "Tech", "value": "tech" },
+            { "label": "Business", "value": "business" },
+            { "label": "Health", "value": "health" }
+          ],
+          "value": []
+        }
+      ]
+    },
+    {
+      "formName": "Job Application",
+      "fields": [
+        {
+          "type": "text",
+          "label": "Full Name",
+          "name": "applicantName",
+          "required": true,
+          "placeholder": "Your name",
+          "value": ""
+        },
+        {
+          "type": "email",
+          "label": "Email",
+          "name": "applicantEmail",
+          "required": true,
+          "placeholder": "you@example.com",
+          "value": ""
+        },
+        {
+          "type": "file",
+          "label": "Resume",
+          "name": "resume",
+          "required": true,
+          "description": "Upload your resume (PDF only)",
+          "placeholder": "Choose file",
+          "allowedExtensions": ["pdf"],
+          "value": null
+        }
+      ]
+    }
+  ]
+}
