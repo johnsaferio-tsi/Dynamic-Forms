@@ -76,6 +76,118 @@ export const validateField = (
   return null
 }
 
+export const validateFieldValue = (
+  field: Record<string, unknown>,
+  value: unknown
+): string | null => {
+  if (field.required) {
+    if (
+      (field.type === "checkbox" &&
+        Array.isArray(value) &&
+        value.length === 0) ||
+      (field.type === "file" && !value) ||
+      (typeof value === "string" && value.trim() === "") ||
+      value === undefined ||
+      value === null
+    ) {
+      return `${field.label || field.name} is required.`
+    }
+  }
+  switch (field.type) {
+    case "text":
+    case "textarea":
+    case "password":
+    case "email": {
+      if (typeof value === "string") {
+        if (
+          field.minLength !== undefined &&
+          value.length < (field.minLength as number)
+        ) {
+          return `${field.label || field.name} must be at least ${
+            field.minLength
+          } characters.`
+        }
+        if (
+          field.maxLength !== undefined &&
+          value.length > (field.maxLength as number)
+        ) {
+          return `${field.label || field.name} must be at most ${
+            field.maxLength
+          } characters.`
+        }
+        if (field.type === "email" && value) {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+          if (!emailRegex.test(value)) {
+            return `Please enter a valid email address.`
+          }
+        }
+      }
+      break
+    }
+    case "number": {
+      const num = typeof value === "string" ? parseFloat(value) : value
+      if (typeof num === "number" && !isNaN(num)) {
+        if (field.min !== undefined && num < (field.min as number)) {
+          return `${field.label || field.name} must be at least ${field.min}.`
+        }
+        if (field.max !== undefined && num > (field.max as number)) {
+          return `${field.label || field.name} must be at most ${field.max}.`
+        }
+      } else if (field.required) {
+        return `${field.label || field.name} is required.`
+      }
+      break
+    }
+    case "checkbox": {
+      if (field.required && Array.isArray(value) && value.length === 0) {
+        return `Please select at least one option for ${
+          field.label || field.name
+        }.`
+      }
+      break
+    }
+    case "radio":
+    case "select": {
+      if (field.required && (!value || value === "")) {
+        return `Please select an option for ${field.label || field.name}.`
+      }
+      break
+    }
+    case "date": {
+      if (field.required && (!value || value === "")) {
+        return `${field.label || field.name} is required.`
+      }
+      break
+    }
+    case "file": {
+      if (field.required && !value) {
+        return `Please upload a file for ${field.label || field.name}.`
+      }
+      if (
+        value &&
+        field.allowedExtensions &&
+        Array.isArray(field.allowedExtensions)
+      ) {
+        const ext = (value as File).name?.split(".").pop()?.toLowerCase()
+        if (
+          ext &&
+          !(field.allowedExtensions as string[])
+            .map((e) => e.toLowerCase())
+            .includes(ext)
+        ) {
+          return `Allowed file types: ${(
+            field.allowedExtensions as string[]
+          ).join(", ")}`
+        }
+      }
+      break
+    }
+    default:
+      break
+  }
+  return null
+}
+
 export const basicJsons = [
   {
     name: "Basic Structure",

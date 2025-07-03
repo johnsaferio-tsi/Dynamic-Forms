@@ -13,6 +13,7 @@ interface TextFieldProps {
   name: string
   onChange?: (value: string) => void
   type?: "text" | "email"
+  error?: string
 }
 
 const TextField: React.FC<TextFieldProps> = ({
@@ -27,6 +28,7 @@ const TextField: React.FC<TextFieldProps> = ({
   name,
   onChange,
   type = "text",
+  error: externalError,
 }) => {
   const [error, setError] = useState<string | undefined>()
   const [initialRender, setInitialRender] = useState(false)
@@ -75,7 +77,7 @@ const TextField: React.FC<TextFieldProps> = ({
         placeholder={placeholder}
         value={value}
         onChange={handleChange}
-        error={error}
+        error={externalError !== undefined ? externalError : error}
         disabled={disabled}
         name={name}
         type={type}

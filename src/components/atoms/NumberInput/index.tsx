@@ -12,6 +12,7 @@ interface NumberFieldProps {
   disabled?: boolean
   onChange?: (value: number | string) => void
   name: string
+  error?: string
 }
 
 const NumberField: React.FC<NumberFieldProps> = ({
@@ -25,6 +26,7 @@ const NumberField: React.FC<NumberFieldProps> = ({
   name,
   disabled = false,
   onChange,
+  error: externalError,
 }) => {
   const [error, setError] = useState<string | undefined>()
   const [initialRender, setInitialRender] = useState(false)
@@ -68,7 +70,7 @@ const NumberField: React.FC<NumberFieldProps> = ({
         placeholder={placeholder}
         value={value}
         onChange={handleChange}
-        error={error}
+        error={externalError !== undefined ? externalError : error}
         disabled={disabled}
         data-testid="number-input"
         name={name}

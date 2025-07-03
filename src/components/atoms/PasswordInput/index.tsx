@@ -12,6 +12,7 @@ interface PasswordFieldProps {
   disabled?: boolean
   name: string
   onChange?: (value: string) => void
+  error?: string
 }
 
 const PasswordField: React.FC<PasswordFieldProps> = ({
@@ -25,6 +26,7 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
   disabled = false,
   name,
   onChange,
+  error: externalError,
 }) => {
   const [error, setError] = useState<string | undefined>()
   const [initialRender, setInitialRender] = useState(false)
@@ -64,7 +66,7 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
         placeholder={placeholder}
         value={value}
         onChange={(event) => handleChange(event.currentTarget.value)}
-        error={error}
+        error={externalError !== undefined ? externalError : error}
         disabled={disabled}
         name={name}
       />

@@ -12,6 +12,7 @@ interface DateGroupFieldProps {
   value?: string
   onChange: (value: string | null) => void
   name: string
+  error?: string
 }
 const DateGroup: React.FC<DateGroupFieldProps> = ({
   label,
@@ -21,6 +22,7 @@ const DateGroup: React.FC<DateGroupFieldProps> = ({
   name,
   value,
   onChange,
+  error: externalError,
 }) => {
   const [dateError, setDateError] = React.useState<string>("")
 
@@ -38,7 +40,7 @@ const DateGroup: React.FC<DateGroupFieldProps> = ({
         placeholder={placeholder}
         label={label}
         description={description}
-        error={dateError}
+        error={externalError !== undefined ? externalError : dateError}
         withAsterisk={required}
         onChange={handleDateChange}
         required={required}

@@ -1,4 +1,12 @@
-import { Container, Grid, Space, Title, Center, Flex } from "@mantine/core"
+import {
+  Container,
+  Grid,
+  Space,
+  Title,
+  Center,
+  Flex,
+  Notification,
+} from "@mantine/core"
 import { useMediaQuery } from "@mantine/hooks"
 import JsonEditor from "@/components/atoms/JsonEditor"
 import React from "react"
@@ -13,6 +21,7 @@ import FileInput from "@/components/atoms/FileInput"
 import Textarea from "@/components/atoms/Textarea"
 import PasswordField from "@/components/atoms/PasswordInput"
 import ExampleDrawer from "@/components/modules/ExampleDrawer"
+import { validateFieldValue } from "@/utils/common"
 
 type FieldType = Record<string, unknown>
 
@@ -25,6 +34,10 @@ const FormBuilder = () => {
   )
   const [fieldValues, setFieldValues] = React.useState<
     Record<string, Record<string, unknown>>
+  >({})
+  const [showSuccess, setShowSuccess] = React.useState<string | null>(null)
+  const [fieldErrors, setFieldErrors] = React.useState<
+    Record<string, Record<string, string | null>>
   >({})
 
   const generateForm = (schemas: { formName: string; fields: unknown[] }[]) => {
@@ -65,9 +78,43 @@ const FormBuilder = () => {
         [name]: value,
       },
     }))
+    // Clear error for this field
+    setFieldErrors((prev) => ({
+      ...prev,
+      [formName]: {
+        ...prev[formName],
+        [name]: null,
+      },
+    }))
+  }
+
+  const handleSubmit = (form: FormSchema) => {
+    const errors: Record<string, string | null> = {}
+    let hasError = false
+    for (let i = 0; i < form.fields.length; i++) {
+      const field = form.fields[i]
+      const value = fieldValues[form.formName]?.[field.name as string]
+      const error = validateFieldValue(field, value)
+      if (error) {
+        errors[field.name as string] = error
+        hasError = true
+      } else {
+        errors[field.name as string] = null
+      }
+    }
+    setFieldErrors((prev) => ({
+      ...prev,
+      [form.formName]: errors,
+    }))
+    if (hasError) {
+      return
+    }
+    setShowSuccess(form.formName)
+    setTimeout(() => setShowSuccess(null), 3000)
   }
 
   const renderField = (formName: string, field: FieldType) => {
+    const error = fieldErrors[formName]?.[field.name as string] || undefined
     switch (field.type) {
       case "text":
         return (
@@ -88,6 +135,7 @@ const FormBuilder = () => {
             maxLength={field.maxLength as number}
             disabled={field.disabled as boolean}
             type="text"
+            error={error}
           />
         )
       case "email":
@@ -109,6 +157,7 @@ const FormBuilder = () => {
             maxLength={field.maxLength as number}
             disabled={field.disabled as boolean}
             type="email"
+            error={error}
           />
         )
       case "number":
@@ -132,6 +181,7 @@ const FormBuilder = () => {
             min={field.min as number}
             max={field.max as number}
             disabled={field.disabled as boolean}
+            error={error}
           />
         )
       case "radio":
@@ -149,7 +199,7 @@ const FormBuilder = () => {
             onChange={(val: string) =>
               handleFieldChange(formName, field.name as string, val)
             }
-            error={undefined}
+            error={error}
           />
         )
       case "checkbox":
@@ -167,6 +217,7 @@ const FormBuilder = () => {
             onChange={(val: string[]) =>
               handleFieldChange(formName, field.name as string, val)
             }
+            error={error}
           />
         )
       case "date":
@@ -184,6 +235,7 @@ const FormBuilder = () => {
             onChange={(val: string | null) =>
               handleFieldChange(formName, field.name as string, val)
             }
+            error={error}
           />
         )
       case "select":
@@ -202,6 +254,7 @@ const FormBuilder = () => {
             onChange={(val: string | null) =>
               handleFieldChange(formName, field.name as string, val)
             }
+            error={error}
           />
         )
       case "file":
@@ -220,6 +273,7 @@ const FormBuilder = () => {
               handleFieldChange(formName, field.name as string, val)
             }
             allowedExtensions={field.allowedExtensions as string[]}
+            error={error}
           />
         )
       case "textarea":
@@ -237,6 +291,7 @@ const FormBuilder = () => {
             onChange={(val: string) =>
               handleFieldChange(formName, field.name as string, val)
             }
+            error={error}
           />
         )
       case "password":
@@ -257,6 +312,7 @@ const FormBuilder = () => {
             minLength={field.minLength as number}
             maxLength={field.maxLength as number}
             disabled={field.disabled as boolean}
+            error={error}
           />
         )
       default:
@@ -306,16 +362,42 @@ const FormBuilder = () => {
               <Grid.Col span={12}>
                 <div style={{ width: "100%" }}>
                   {formSchemas.map((form) => (
-                    <>
-                      <FormFieldSet
-                        key={form.formName}
-                        fieldSetLegend={form.formName}>
+                    <React.Fragment key={form.formName}>
+                      <FormFieldSet fieldSetLegend={form.formName}>
                         {form.fields.map((field) =>
                           renderField(form.formName, field)
                         )}
+                        <Center mt={16}>
+                          <button
+                            type="button"
+                            style={{
+                              background: "#FF8833",
+                              color: "#000",
+                              border: "none",
+                              borderRadius: 4,
+                              padding: "8px 24px",
+                              fontWeight: 600,
+                              cursor: "pointer",
+                              marginTop: 12,
+                            }}
+                            onClick={() => handleSubmit(form)}>
+                            Submit
+                          </button>
+                        </Center>
+                        {showSuccess === form.formName && (
+                          <Center mt={16}>
+                            <Notification
+                              color="green"
+                              title="Success!"
+                              onClose={() => setShowSuccess(null)}>
+                              Form &quot;{form.formName}&quot; submitted
+                              successfully!
+                            </Notification>
+                          </Center>
+                        )}
                       </FormFieldSet>
                       <Space h="md" />
-                    </>
+                    </React.Fragment>
                   ))}
                 </div>
               </Grid.Col>
@@ -342,16 +424,42 @@ const FormBuilder = () => {
                 <div
                   style={{ height: "85vh", overflow: "auto", paddingRight: 8 }}>
                   {formSchemas.map((form) => (
-                    <>
-                      <FormFieldSet
-                        key={form.formName}
-                        fieldSetLegend={form.formName}>
+                    <React.Fragment key={form.formName}>
+                      <FormFieldSet fieldSetLegend={form.formName}>
                         {form.fields.map((field) =>
                           renderField(form.formName, field)
                         )}
+                        <Center mt={16}>
+                          <button
+                            type="button"
+                            style={{
+                              background: "#FF8833",
+                              color: "#000",
+                              border: "none",
+                              borderRadius: 4,
+                              padding: "8px 24px",
+                              fontWeight: 600,
+                              cursor: "pointer",
+                              marginTop: 12,
+                            }}
+                            onClick={() => handleSubmit(form)}>
+                            Submit
+                          </button>
+                        </Center>
+                        {showSuccess === form.formName && (
+                          <Center mt={16}>
+                            <Notification
+                              color="green"
+                              title="Success!"
+                              onClose={() => setShowSuccess(null)}>
+                              Form &quot;{form.formName}&quot; submitted
+                              successfully!
+                            </Notification>
+                          </Center>
+                        )}
                       </FormFieldSet>
                       <Space h="md" />
-                    </>
+                    </React.Fragment>
                   ))}
                 </div>
               </Grid.Col>

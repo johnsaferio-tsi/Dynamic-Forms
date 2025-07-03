@@ -9,6 +9,7 @@ interface TextareaFieldProps {
   value?: string
   onChange: (value: string) => void
   name: string
+  error?: string
 }
 
 const Textarea: React.FC<TextareaFieldProps> = ({
@@ -19,6 +20,7 @@ const Textarea: React.FC<TextareaFieldProps> = ({
   value,
   onChange,
   name,
+  error: externalError,
 }) => {
   const [error, setError] = React.useState<string>("")
 
@@ -41,7 +43,7 @@ const Textarea: React.FC<TextareaFieldProps> = ({
         value={value}
         onChange={handleChange}
         name={name}
-        error={error}
+        error={externalError !== undefined ? externalError : error}
         withAsterisk={required}
       />
       <Space h="md" />

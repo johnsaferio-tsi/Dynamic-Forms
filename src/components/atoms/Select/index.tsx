@@ -10,6 +10,7 @@ interface SelectFieldProps {
   onChange: (value: string | null) => void
   name: string
   items: { value: string; label: string }[]
+  error?: string
 }
 
 const SelectGroup: React.FC<SelectFieldProps> = ({
@@ -21,6 +22,7 @@ const SelectGroup: React.FC<SelectFieldProps> = ({
   onChange,
   name,
   items,
+  error: externalError,
 }) => {
   const [error, setError] = React.useState<string>("")
 
@@ -42,7 +44,7 @@ const SelectGroup: React.FC<SelectFieldProps> = ({
         value={value}
         onChange={handleChange}
         name={name}
-        error={error}
+        error={externalError !== undefined ? externalError : error}
         data={items}
         withAsterisk={required}
         clearable

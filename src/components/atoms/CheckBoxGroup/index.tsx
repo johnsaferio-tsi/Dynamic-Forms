@@ -15,6 +15,7 @@ interface CheckBoxFieldProps {
   value?: string[]
   onChange: (value: string[]) => void
   name: string
+  error?: string
 }
 
 const CheckBoxGroup: React.FC<CheckBoxFieldProps> = ({
@@ -25,6 +26,7 @@ const CheckBoxGroup: React.FC<CheckBoxFieldProps> = ({
   items,
   value,
   onChange,
+  error: externalError,
 }) => {
   const [error, setError] = React.useState<string | undefined>()
   const defaultValue = items
@@ -50,7 +52,7 @@ const CheckBoxGroup: React.FC<CheckBoxFieldProps> = ({
         withAsterisk={required}
         required={required}
         value={value}
-        error={error}
+        error={externalError !== undefined ? externalError : error}
         onChange={handleCheckboxChange}>
         <Group mt="xs">
           {items.map((item, key) => (
